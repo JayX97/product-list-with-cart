@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
+
+* {
+    margin: 0;
+    font-family: "Red Hat Text", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+    --style-red: hsl(14, 86%, 42%);
+    --style-green: hsl(159, 69%, 38%);
+    --style-rose-50: hsl(20, 50%, 98%);
+    --style-rose-100: hsl(13, 31%, 94%);
+    --style-rose-300: hsl(14, 25%, 72%);
+    --style-rose-400: hsl(7, 20%, 60%);
+    --style-rose-500: hsl(12, 20%, 44%);
+    --style-rose-900: hsl(14, 65%, 9%);
+}
+
+body {
+    width: 60%;
+    color: var(--style-rose-900);
+    background-color: var(--style-rose-100);
+    margin: 70px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+h1 {
+    font-size: 37px;
+    margin-bottom: 35px;
+}
+
+#items-container {
+    width: 65%;
+}
+
+#items-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.item {
+    width: 31.5%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.item > p {
+    margin-bottom: 4px;
+}
+
+.item-image {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.add-button {
+    width: 130px;
+    height: 40px;
+    border-radius: 50px;
+}
+
+.item-category {
+    color: var(--style-rose-500);
+    font-size: 13px;
+}
+
+.item-name {
+    color: var(--style-rose-900);
+    font-weight: 600;
+}
+
+.item-price {
+    color: var(--style-red);
+    font-weight: 600;
+}
+
+#cart {
+    width: 29%;
+    height: 20%;
+    background-color: var(--style-rose-50);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#cart > h3 {
+    color: var(--style-red);
+    font-size: 25px;
+}

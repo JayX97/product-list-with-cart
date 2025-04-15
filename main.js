@@ -1,6 +1,17 @@
 const itemContainer = document.getElementById('items-container'); // container to append items
+const cart = document.getElementById('cart'); // cart
 
-let data;
+// header
+const header = document.createElement("h1");
+header.innerText = "Desserts";
+itemContainer.appendChild(header);
+
+// items list
+const itemsList = document.createElement("div");
+itemsList.id = "items-list";
+itemContainer.appendChild(itemsList);
+
+// DISPLAY INDIVIDUAL ITEMS AVAILABLE FROM DATABASE
 
 fetch("./data.json") // fetch data from data.json using Fetch API
     .then(response => response.json())
@@ -11,33 +22,58 @@ fetch("./data.json") // fetch data from data.json using Fetch API
 
         //item image
         const itemImage = document.createElement("img");
-        itemImage.class = "item-image";
+        itemImage.className = "item-image";
         itemImage.src = item.image.desktop; // need to create conditional to generate different sizes based on screen size
         itemImage.alt = item.name;
 
+        //add to cart button (will change to div with two buttons to increase/decrease item quantity)
+        const addButton = document.createElement("button");
+        addButton.innerText = "Add to Cart";
+        addButton.className = "add-button";
+
         //item category
         const itemCategory = document.createElement("p");
-        itemCategory.class = "item-category";
+        itemCategory.className = "item-category";
         itemCategory.innerText = item.category;
 
         //item name
         const itemName = document.createElement("p");
-        itemName.class = "item-name";
+        itemName.className = "item-name";
         itemName.innerText = item.name;
 
         //item price
         const itemPrice = document.createElement("p");
         const priceDisplay = parseFloat(item.price).toFixed(2);
-        itemPrice.class = "item-price";
+        itemPrice.className = "item-price";
         itemPrice.innerText = "$" + priceDisplay;
 
         //append elements to box
         itemBox.appendChild(itemImage);
+        itemBox.appendChild(addButton);
         itemBox.appendChild(itemCategory);
         itemBox.appendChild(itemName);
         itemBox.appendChild(itemPrice);
     
-        // append item box to web page
-        itemContainer.appendChild(itemBox);
+        // append item box to list
+        itemsList.appendChild(itemBox);
     }))
     .catch(error => console.log(error));
+
+// CART
+
+// cart header
+const cartHeader = document.createElement("h3");
+cartHeader.innerText = "Your Cart (0)" // 0 is placeholder for variable
+cart.appendChild(cartHeader);
+
+// cart contents (empty cart content as placeholder)
+const emptyCartImage = document.createElement("img");
+emptyCartImage.id = "empty-cart-img";
+emptyCartImage.src = "./assets/images/illustration-empty-cart.svg";
+emptyCartImage.alt = "Empty cart";
+cart.appendChild(emptyCartImage);
+
+const emptyCartMessage = document.createElement("p");
+emptyCartMessage.id = "empty-cart-message";
+emptyCartMessage.innerText = "Your added items will appear here";
+cart.appendChild(emptyCartMessage);
