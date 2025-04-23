@@ -1,6 +1,8 @@
 const itemContainer = document.getElementById('items-container'); // container to append items
 const cart = document.getElementById('cart'); // cart
 
+let cartArray = [];
+
 // header
 const header = document.createElement("h1");
 header.innerText = "Desserts";
@@ -11,6 +13,14 @@ const itemsList = document.createElement("div");
 itemsList.id = "items-list";
 itemContainer.appendChild(itemsList);
 
+// FUNCTIONS
+const addToCart = (newItem) => {// added to add button event listener
+    //if (cartArray.some((item) => item === newItem))
+    cartArray.push(newItem);
+    updateAddition(newItem);
+    console.log(cartArray);
+}
+
 // DISPLAY INDIVIDUAL ITEMS AVAILABLE FROM DATABASE
 
 fetch("./data.json") // fetch data from data.json using Fetch API
@@ -20,15 +30,19 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         const itemBox = document.createElement("div");
         itemBox.className = "item";
 
-        //item image
+        // item image
         const itemImage = document.createElement("img");
         itemImage.className = "item-image";
         itemImage.src = item.image.desktop; // need to create conditional to generate different sizes based on screen size
         itemImage.alt = item.name;
 
-        //add to cart button (will change to div with two buttons to increase/decrease item quantity)
+        // add to cart button (will change to div with two buttons to increase/decrease item quantity)
         const addButton = document.createElement("button");
         addButton.innerHTML = "";
+        addButton.addEventListener("click", (e) => { // anonymous function used to prevent default click behavior when page loads up
+            e.preventDefault();
+            addToCart(item.name);
+        }); // adds item to cart
         
         // add cart icon for button
         const addCartIcon = document.createElement("img");
@@ -40,23 +54,23 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         addButton.innerHTML = addButton.innerHTML + " Add to Cart";
         addButton.className = "add-button";
 
-        //item category
+        // item category
         const itemCategory = document.createElement("p");
         itemCategory.className = "item-category";
         itemCategory.innerText = item.category;
 
-        //item name
+        // item name
         const itemName = document.createElement("p");
         itemName.className = "item-name";
         itemName.innerText = item.name;
 
-        //item price
+        // item price
         const itemPrice = document.createElement("p");
         const priceDisplay = parseFloat(item.price).toFixed(2);
         itemPrice.className = "item-price";
         itemPrice.innerText = "$" + priceDisplay;
 
-        //append elements to box
+        // append elements to box
         itemBox.appendChild(itemImage);
         itemBox.appendChild(addButton);
         itemBox.appendChild(itemCategory);
@@ -72,22 +86,37 @@ fetch("./data.json") // fetch data from data.json using Fetch API
 
 // cart header
 const cartHeader = document.createElement("h3");
-cartHeader.innerText = "Your Cart (0)" // 0 is placeholder for variable
+cartHeader.id = "cart-header";
+cartHeader.innerText = "Your Cart (0)";
 cart.appendChild(cartHeader);
 
 // cart contents (empty cart content as placeholder)
 const cartList = document.createElement("div"); // container containing list of items in cart
 cartList.id = "cart-list";
 
+// empty cart div
+const emptyCart = document.createElement("div");
+emptyCart.id = "empty-cart";
+
 const emptyCartImage = document.createElement("img");
 emptyCartImage.id = "empty-cart-img";
 emptyCartImage.src = "./assets/images/illustration-empty-cart.svg";
 emptyCartImage.alt = "Empty cart";
-cartList.appendChild(emptyCartImage);
+emptyCart.appendChild(emptyCartImage);
 
 const emptyCartMessage = document.createElement("p");
 emptyCartMessage.id = "empty-cart-message";
 emptyCartMessage.innerText = "Your added items will appear here";
-cartList.appendChild(emptyCartMessage);
+emptyCart.appendChild(emptyCartMessage);
 
+cartList.appendChild(emptyCart);
 cart.appendChild(cartList);
+
+// FUNCTIONS TO UPDATE CART CONTENTS
+const updateAddition = (item) => {
+    emptyCart.style.display = "none";
+
+    const cartItem = document.createElement("div");
+    cartItem.innerText = item;
+    cartList.appendChild(cartItem);
+};
