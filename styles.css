@@ -61,9 +61,25 @@ h1 {
 }
 
 .add-button {
-    width: 130px;
+    color: var(--style-rose-900);
+    background-color: var(--style-rose-50);
+    width: 140px;
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
     border-radius: 50px;
+    position: relative;
+    top: -20px;
+    margin: 0 auto;
+    padding: 0 10px;
+    border: 1px solid var(--style-rose-500);
+}
+
+.add-cart-icon {
+    width: 17px;
+    margin: 5px;
 }
 
 .item-category {
@@ -92,4 +108,21 @@ h1 {
 #cart > h3 {
     color: var(--style-red);
     font-size: 25px;
+}
+
+#cart-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#empty-cart-img {
+    margin: 30px 0 15px 0;;
+}
+
+#empty-cart-message {
+    color: var(--style-rose-500);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
