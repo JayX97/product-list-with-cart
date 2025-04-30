@@ -94,7 +94,40 @@ cart.appendChild(cartHeader);
 const cartList = document.createElement("div"); // container containing list of items in cart
 cartList.id = "cart-list";
 
-// empty cart div
+// end of list contents (total, confirm order button)
+const endOfList = document.createElement("div");
+endOfList.id = "end-of-list";
+
+const orderTotal = document.createElement("div"); // div containing order total label and total price
+orderTotal.id = "order-total";
+const totalLabel = document.createElement("p");
+totalLabel.innerText = "Order Total";
+const totalPrint = document.createElement("h3");
+totalPrint.innerText = "$0.00"; // placeholder
+
+orderTotal.appendChild(totalLabel);
+orderTotal.appendChild(totalPrint);
+endOfList.appendChild(orderTotal);
+
+const ecoMessage = document.createElement("div"); // div stating that delivery is carbon-neutral
+ecoMessage.id = "eco-message";
+const ecoImage = document.createElement("img");
+ecoImage.src = "./assets/images/icon-carbon-neutral.svg";
+ecoImage.alt = "Carbon neutral";
+const ecoMessageText = document.createElement("p");
+ecoMessageText.innerHTML = "This is a <strong>carbon-neutral</strong> delivery";
+
+ecoMessage.appendChild(ecoImage);
+ecoMessage.appendChild(ecoMessageText);
+endOfList.appendChild(ecoMessage);
+
+const confirmOrderButton = document.createElement("button");
+confirmOrderButton.id = "confirm-order";
+confirmOrderButton.innerHTML = "Confirm Order";
+
+endOfList.appendChild(confirmOrderButton);
+
+// EMPTY CART DIV
 const emptyCart = document.createElement("div");
 emptyCart.id = "empty-cart";
 
@@ -111,6 +144,8 @@ emptyCart.appendChild(emptyCartMessage);
 
 cartList.appendChild(emptyCart);
 cart.appendChild(cartList);
+cart.appendChild(endOfList);
+// MAKE ORDER CONFIRMATION SECTION HIDDEN WHEN LIST LENGTH IS ZERO
 
 // FUNCTIONS TO UPDATE CART CONTENTS
 const updateAddition = (item) => {
@@ -118,5 +153,6 @@ const updateAddition = (item) => {
 
     const cartItem = document.createElement("div");
     cartItem.innerText = item;
+    cartHeader.innerText = "Your Cart (" + cartArray.length + ")";
     cartList.appendChild(cartItem);
 };

@@ -34,6 +34,10 @@ h1 {
     margin-bottom: 35px;
 }
 
+strong {
+    font-weight: 600;
+}
+
 #items-container {
     width: 65%;
 }
@@ -129,4 +133,55 @@ h1 {
     font-size: 13px;
     font-weight: 600;
     margin-bottom: 10px;
+}
+
+#end-of-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#order-total {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0 20px 0;
+    font-size: 14px;
+}
+
+#order-total > h3 {
+    font-size: 25px;
+}
+
+#eco-message {
+    background-color: var(--style-rose-100);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 15px 0 15px 0;
+    font-size: 14px;
+}
+
+#eco-message > img {
+    margin-right: 6px;
+}
+
+#confirm-order {
+    width: 100%;
+    color: var(--style-rose-100);
+    background-color: var(--style-red);
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    margin: 25px 0 5px 0;
+    padding: 15px 0 15px 0;
+}
+
+#confirm-order:hover {
+    cursor: pointer;
 }
