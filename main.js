@@ -1,7 +1,7 @@
 const itemContainer = document.getElementById('items-container'); // container to append items
 const cart = document.getElementById('cart'); // cart
 
-let cartArray = [];
+const cartArray = []; // array of OBJECTS ---> { image, name, category, price, (NEW) ** QUANTITY ** }
 
 // header
 const header = document.createElement("h1");
@@ -15,10 +15,15 @@ itemContainer.appendChild(itemsList);
 
 // FUNCTIONS
 const addToCart = (newItem) => {// added to add button event listener
-    //if (cartArray.some((item) => item === newItem))
-    cartArray.push(newItem);
+    emptyCart.style.display = "none";
+    endOfList.style.display = "flex";
+    
+    newItem.quantity++;
     updateAddition(newItem);
+
+    cartHeader.innerText = "Your Cart (" + cartArray.length + ")";
     console.log(cartArray);
+    console.log(newItem.quantity);
 }
 
 // DISPLAY INDIVIDUAL ITEMS AVAILABLE FROM DATABASE
@@ -26,6 +31,8 @@ const addToCart = (newItem) => {// added to add button event listener
 fetch("./data.json") // fetch data from data.json using Fetch API
     .then(response => response.json())
     .then(data => data.forEach(item => { // takes JSON file data from fetch function call and displays data to webpage
+        // add item to webpage menu
+        item.quantity = 0; // initialize current quantity of item in cart to 0;
         // item container 
         const itemBox = document.createElement("div");
         itemBox.className = "item";
@@ -41,7 +48,7 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         addButton.innerHTML = "";
         addButton.addEventListener("click", (e) => { // anonymous function used to prevent default click behavior when page loads up
             e.preventDefault();
-            addToCart(item.name);
+            addToCart(item);
         }); // adds item to cart
         
         // add cart icon for button
@@ -126,6 +133,7 @@ confirmOrderButton.id = "confirm-order";
 confirmOrderButton.innerHTML = "Confirm Order";
 
 endOfList.appendChild(confirmOrderButton);
+endOfList.style.display = "none"; // HIDES END OF LIST SECTION OF CART WHEN CART IS EMPTY
 
 // EMPTY CART DIV
 const emptyCart = document.createElement("div");
@@ -145,14 +153,41 @@ emptyCart.appendChild(emptyCartMessage);
 cartList.appendChild(emptyCart);
 cart.appendChild(cartList);
 cart.appendChild(endOfList);
-// MAKE ORDER CONFIRMATION SECTION HIDDEN WHEN LIST LENGTH IS ZERO
 
 // FUNCTIONS TO UPDATE CART CONTENTS
-const updateAddition = (item) => {
-    emptyCart.style.display = "none";
+const updateAddition = (item) => { // method used to update cart after item addition
+    const uniqueID = item.name.toLowerCase().split(" ").join("-"); // id used in specific item's element containing "quantity" class
+    const uniqueIDTotal = uniqueID + "-total"; // id used in specific item's total based on quantity
+    cartArray.push(item);
+    
+    const currentQuantity = item.quantity;
 
-    const cartItem = document.createElement("div");
-    cartItem.innerText = item;
-    cartHeader.innerText = "Your Cart (" + cartArray.length + ")";
-    cartList.appendChild(cartItem);
+    const currentPrice = item.price * parseFloat(currentQuantity);
+
+    if (currentQuantity === 1) { // item is not in cart before addition
+        const cartItem = document.createElement("div");
+        cartItem.className = "cart-item";
+
+        const cartItemDetails = document.createElement("div");
+        cartItemDetails.className = "cart-item-details";
+        // name
+        const cartItemName = document.createElement("span");
+        cartItemName.className = "cart-item-name";
+        cartItemName.innerHTML = "<p><strong>" + item.name + "</strong></p>";
+        // quantity/price section
+        const cartItemPrice = document.createElement("span");
+        cartItemPrice.className = "cart-item-price";
+        cartItemPrice.innerHTML = `<p class= quantity id=${uniqueID}>` + currentQuantity + "x</p><p>@ $" + parseFloat(item.price).toFixed(2) + `</p><p class = quantity-price id=${uniqueIDTotal}>$` + parseFloat(currentPrice).toFixed(2) + "</p>";
+
+        cartItemDetails.appendChild(cartItemName);
+        cartItemDetails.appendChild(cartItemPrice);
+
+        cartItem.appendChild(cartItemDetails);
+        cartList.appendChild(cartItem);
+    }
+
+    else { // if item is present in cart before addition only increment the QUANTITY of item
+        document.getElementById(uniqueID).innerText = currentQuantity + "x";
+        document.getElementById(uniqueIDTotal).innerText = "$" + parseFloat(currentPrice).toFixed(2);
+    }
 };
