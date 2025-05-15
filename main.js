@@ -1,7 +1,7 @@
 const itemContainer = document.getElementById('items-container'); // container to append items
 const cart = document.getElementById('cart'); // cart
 
-const cartArray = []; // array of OBJECTS ---> { image, name, category, price, (NEW) ** QUANTITY ** }
+let cartArray = []; // array of OBJECTS ---> { image, name, category, price, (NEW) ** QUANTITY ** }
 
 // header
 const header = document.createElement("h1");
@@ -21,9 +21,40 @@ const addToCart = (newItem) => {// added to add button event listener
     newItem.quantity++;
     updateAddition(newItem);
 
-    cartHeader.innerText = "Your Cart (" + cartArray.length + ")";
+    cartHeader.innerText = "Your Cart (" + totalCartQuantity() + ")";
+    printTotal();
     console.log(cartArray);
     console.log(newItem.quantity);
+}
+
+const removeCartItem = (oldItem) => {// added to remove button event listener
+    const oldItemID = oldItem.name.toLowerCase().split(" ").join("-") + "-div"; // obtain div with item details
+    const oldItemDiv = document.getElementById(oldItemID);
+    cartArray = cartArray.filter(item => item.name !== oldItem.name); // remove all items from cart array with same name
+
+    oldItem.quantity = 0;
+    oldItemDiv.remove();
+
+    if (totalCartQuantity() === 0) {// replace cart list with empty cart image if cart quantity is 0
+        endOfList.style.display = "none";
+        emptyCart.style.display = "flex";
+    }
+    
+    cartHeader.innerText = "Your Cart (" + totalCartQuantity() + ")";
+    printTotal();
+    console.log(cartArray);
+    console.log(oldItem.quantity);
+}
+
+const totalCartQuantity = () => { // add up quantities of all items in cart
+    return cartArray.reduce((total, currItem) => total + currItem.quantity, 0);
+}
+
+const printTotal = () => { // add up total from item quantities in cart
+    const totalPrintDiv = document.getElementById("total-print");
+    const grandTotal = cartArray.reduce((total, currItem) => total + (currItem.price * currItem.quantity), 0);
+
+    totalPrintDiv.innerText = "$" + parseFloat(grandTotal).toFixed(2);
 }
 
 // DISPLAY INDIVIDUAL ITEMS AVAILABLE FROM DATABASE
@@ -110,6 +141,7 @@ orderTotal.id = "order-total";
 const totalLabel = document.createElement("p");
 totalLabel.innerText = "Order Total";
 const totalPrint = document.createElement("h3");
+totalPrint.id = "total-print";
 totalPrint.innerText = "$0.00"; // placeholder
 
 orderTotal.appendChild(totalLabel);
@@ -158,7 +190,8 @@ cart.appendChild(endOfList);
 const updateAddition = (item) => { // method used to update cart after item addition
     const uniqueID = item.name.toLowerCase().split(" ").join("-"); // id used in specific item's element containing "quantity" class
     const uniqueIDTotal = uniqueID + "-total"; // id used in specific item's total based on quantity
-    cartArray.push(item);
+    
+    if (!(cartArray.some(obj => obj.name === item.name))) cartArray.push(item);
     
     const currentQuantity = item.quantity;
 
@@ -167,6 +200,7 @@ const updateAddition = (item) => { // method used to update cart after item addi
     if (currentQuantity === 1) { // item is not in cart before addition
         const cartItem = document.createElement("div");
         cartItem.className = "cart-item";
+        cartItem.id = uniqueID + "-div"; // id used for remove method
 
         const cartItemDetails = document.createElement("div");
         cartItemDetails.className = "cart-item-details";
@@ -182,7 +216,19 @@ const updateAddition = (item) => { // method used to update cart after item addi
         cartItemDetails.appendChild(cartItemName);
         cartItemDetails.appendChild(cartItemPrice);
 
+        //remove button
+        const removeButton = document.createElement("img");
+        removeButton.className = "remove-button";
+        removeButton.src = "./assets/images/icon-remove-item.svg";
+        removeButton.alt = "Remove item";
+        removeButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            removeCartItem(item);
+        });
+        
+        // add details and remove button to cart item
         cartItem.appendChild(cartItemDetails);
+        cartItem.appendChild(removeButton);
         cartList.appendChild(cartItem);
     }
 
