@@ -27,6 +27,19 @@ const addToCart = (newItem) => {// added to add button event listener
     console.log(newItem.quantity);
 }
 
+const decrementItem = (item) => {
+    item.quantity--;
+
+    if (item.quantity === 0) removeCartItem(item);
+    else updateSubtraction(item);
+
+    cartHeader.innerText = "Your Cart (" + totalCartQuantity() + ")";
+    printTotal();
+    console.log(cartArray);
+    console.log(item.quantity);
+    // CREATE FUNCTION TO DECREMENT QUANTITY OF ITEM IN CART
+}
+
 const removeCartItem = (oldItem) => {// added to remove button event listener
     const oldItemID = oldItem.name.toLowerCase().split(" ").join("-") + "-div"; // obtain div with item details
     const oldItemDiv = document.getElementById(oldItemID);
@@ -79,9 +92,16 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         // add to cart button (will change to div with two buttons to increase/decrease item quantity)
         const addButton = document.createElement("button");
         addButton.innerHTML = "";
-        addButton.addEventListener("click", (e) => { // anonymous function used to prevent default click behavior when page loads up
+
+        // add invisible div for button functionality (to separate from other active event listeners on the button)
+        const functionDiv = document.createElement("div");
+        functionDiv.className = "function-div";
+        functionDiv.addEventListener("click", (e) => { // anonymous function used to prevent default click behavior when page loads up
             e.preventDefault();
             addToCart(item);
+            e.currentTarget.style.display = "none"; // remove visibility of initial button styling
+            itemQuantity.style.display = "flex"; // add div to button for quantity increment/decrement
+            amount.innerText = item.quantity;
         }); // adds item to cart
         
         // add cart icon for button
@@ -101,6 +121,17 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         const decrement = document.createElement("div");
         decrement.className = "decrement-button";
         decrement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" fill="none" viewBox="0 0 10 2"><path fill="#fff" d="M0 .375h10v1.25H0V.375Z"/></svg>';
+        decrement.addEventListener("click", (e) => {
+            e.preventDefault();
+            decrementItem(item);
+            amount.innerText = item.quantity;
+            
+            if (item.quantity === 0) {
+                e.currentTarget.parentNode.style.display = "none";
+                functionDiv.style.display = "flex";
+            }
+        });
+
         itemQuantity.appendChild(decrement);
 
         const amount = document.createElement("p");
@@ -111,8 +142,15 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         const increment = document.createElement("div");
         increment.className = "increment-button";
         increment.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#fff" d="M10 4.375H5.625V0h-1.25v4.375H0v1.25h4.375V10h1.25V5.625H10v-1.25Z"/></svg>';
+        increment.addEventListener("click", (e) => {
+            e.preventDefault();
+            addToCart(item);
+            amount.innerText = item.quantity;
+        });
+        
         itemQuantity.appendChild(increment);
 
+        addButton.appendChild(functionDiv);
         addButton.appendChild(itemQuantity);
 
         // item category
@@ -259,4 +297,16 @@ const updateAddition = (item) => { // method used to update cart after item addi
         document.getElementById(uniqueID).innerText = currentQuantity + "x";
         document.getElementById(uniqueIDTotal).innerText = "$" + parseFloat(currentPrice).toFixed(2);
     }
+};
+
+const updateSubtraction = (item) => {
+    const uniqueID = item.name.toLowerCase().split(" ").join("-"); // id used in specific item's element containing "quantity" class
+    const uniqueIDTotal = uniqueID + "-total"; // id used in specific item's total based on quantity
+    
+    const currentQuantity = item.quantity;
+
+    const currentPrice = item.price * parseFloat(currentQuantity);
+    
+    document.getElementById(uniqueID).innerText = currentQuantity + "x";
+    document.getElementById(uniqueIDTotal).innerText = "$" + parseFloat(currentPrice).toFixed(2);
 };
