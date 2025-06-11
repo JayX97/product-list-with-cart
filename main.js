@@ -43,6 +43,7 @@ const decrementItem = (item) => {
 const removeCartItem = (oldItem) => {// added to remove button event listener
     const oldItemID = oldItem.name.toLowerCase().split(" ").join("-") + "-div"; // obtain div with item details
     const oldItemDiv = document.getElementById(oldItemID);
+
     cartArray = cartArray.filter(item => item.name !== oldItem.name); // remove all items from cart array with same name
 
     oldItem.quantity = 0;
@@ -82,6 +83,7 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         // item container 
         const itemBox = document.createElement("div");
         itemBox.className = "item";
+        itemBox.id = item.name.toLowerCase().split(" ").join("-") + "-box";
 
         // item image
         const itemImage = document.createElement("img");
@@ -284,6 +286,14 @@ const updateAddition = (item) => { // method used to update cart after item addi
         removeButton.alt = "Remove item";
         removeButton.addEventListener("click", (e) => {
             e.preventDefault();
+
+            // obtain button nodes from menu item and revert to initial styling when item is removed from cart
+            const adjustQuantity = document.getElementById(item.name.toLowerCase().split(" ").join("-") + "-box").querySelector(".add-button").querySelector(".adjust-quantity");
+            const functionDiv = document.getElementById(item.name.toLowerCase().split(" ").join("-") + "-box").querySelector(".add-button").querySelector(".function-div");
+
+            adjustQuantity.style.display = "none";
+            functionDiv.style.display = "flex";
+
             removeCartItem(item);
         });
         
