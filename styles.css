@@ -318,7 +318,7 @@ strong {
 /* MODAL STYLING */
 
 .modal-container {
-    display: inline;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -332,4 +332,21 @@ strong {
     background-color: var(--style-rose-100);
     width: 30%;
     margin: 15% auto;
+    padding: 30px;
+}
+
+#order-confirmed-icon {
+    width: 45px;
+}
+
+#start-new-order {
+    width: 100%;
+    color: var(--style-rose-100);
+    background-color: var(--style-red);
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    margin: 25px 0 5px 0;
+    padding: 15px 0 15px 0;
 }

@@ -1,5 +1,6 @@
 const itemContainer = document.getElementById('items-container'); // container to append items
 const cart = document.getElementById('cart'); // cart
+const orderModal = document.getElementById('modal'); // order confirmation modal
 
 let cartArray = []; // array of OBJECTS ---> { image, name, category, price, (NEW) ** QUANTITY ** }
 
@@ -227,6 +228,14 @@ const confirmOrderButton = document.createElement("button");
 confirmOrderButton.id = "confirm-order";
 confirmOrderButton.innerHTML = "Confirm Order";
 
+confirmOrderButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const modalContainer = document.querySelector(".modal-container");
+    modalContainer.style.display = "inline"; // pop up order confirmation modal
+
+    // CREATE FUNCTION TO DISPLAY CONTENTS IN CART
+});
+
 endOfList.appendChild(confirmOrderButton);
 endOfList.style.display = "none"; // HIDES END OF LIST SECTION OF CART WHEN CART IS EMPTY
 
@@ -320,3 +329,5 @@ const updateSubtraction = (item) => {
     document.getElementById(uniqueID).innerText = currentQuantity + "x";
     document.getElementById(uniqueIDTotal).innerText = "$" + parseFloat(currentPrice).toFixed(2);
 };
+
+// ORDER CONFIRMATION MODAL
