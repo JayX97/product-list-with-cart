@@ -72,7 +72,58 @@ const printTotal = () => { // add up total from item quantities in cart
     totalPrintDiv.innerText = "$" + parseFloat(grandTotal).toFixed(2);
 }
 
-// ** ADD FUNCTIONS FOR ITEM INCREMENT/DECREMENT **
+const printCart = () => { // prints all items in cart on the confirmation modal
+    const finalOrder = document.getElementById("final-order-list");
+    const grandTotal = cartArray.reduce((total, currItem) => total + (currItem.price * currItem.quantity), 0);
+
+    cartArray.forEach((item) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "final-order-item";
+
+        // div contents
+        const itemImage = document.createElement("img");
+        itemImage.className = "final-order-item-image";
+        itemImage.src = item.image.desktop;
+        itemImage.alt = item.name;
+
+        const itemInfoDiv = document.createElement("div"); // contains name of item, quantity, and item price
+        
+        const itemName = document.createElement("span");
+        itemName.className = "cart-item-name";
+        itemName.innerHTML = "<p><strong>" + item.name + "</strong></p>";
+        itemInfoDiv.appendChild(itemName);
+
+        const itemInfo = document.createElement("span");
+        itemInfo.className = "final-order-item-info";
+        itemInfo.innerHTML = "<p class=quantity>" + item.quantity + "x</p><p>@ " + parseFloat(item.price).toFixed(2) + "</p>";
+        itemInfoDiv.appendChild(itemInfo);
+
+        const itemTotal = document.createElement("h3");
+        const currentPrice = item.price * parseFloat(item.quantity);
+        itemTotal.className = "final-order-item-total";
+        itemTotal.innerText = parseFloat(currentPrice).toFixed(2);
+
+        itemDiv.appendChild(itemImage);
+        itemDiv.appendChild(itemInfoDiv);
+        itemDiv.appendChild(itemTotal);
+
+        finalOrder.appendChild(itemDiv);
+    });
+
+    // cart total
+    const orderTotal = document.createElement("div"); // div containing order total label and total price
+    orderTotal.id = "order-total";
+    const totalLabel = document.createElement("p");
+    totalLabel.innerText = "Order Total";
+    const totalPrint = document.createElement("h3");
+    totalPrint.id = "total-print";
+    totalPrint.innerText = "$" + parseFloat(grandTotal).toFixed(2);
+
+    orderTotal.appendChild(totalLabel);
+    orderTotal.appendChild(totalPrint);
+
+    finalOrder.appendChild(orderTotal);
+}
 
 // DISPLAY INDIVIDUAL ITEMS AVAILABLE FROM DATABASE
 
@@ -231,9 +282,8 @@ confirmOrderButton.innerHTML = "Confirm Order";
 confirmOrderButton.addEventListener("click", (e) => {
     e.preventDefault();
     const modalContainer = document.querySelector(".modal-container");
+    printCart();
     modalContainer.style.display = "inline"; // pop up order confirmation modal
-
-    // CREATE FUNCTION TO DISPLAY CONTENTS IN CART
 });
 
 endOfList.appendChild(confirmOrderButton);
@@ -283,7 +333,7 @@ const updateAddition = (item) => { // method used to update cart after item addi
         // quantity/price section
         const cartItemPrice = document.createElement("span");
         cartItemPrice.className = "cart-item-price";
-        cartItemPrice.innerHTML = `<p class= quantity id=${uniqueID}>` + currentQuantity + "x</p><p>@ $" + parseFloat(item.price).toFixed(2) + `</p><p class = quantity-price id=${uniqueIDTotal}>$` + parseFloat(currentPrice).toFixed(2) + "</p>";
+        cartItemPrice.innerHTML = `<p class=quantity id=${uniqueID}>` + currentQuantity + "x</p><p>@ $" + parseFloat(item.price).toFixed(2) + `</p><p class=quantity-price id=${uniqueIDTotal}>$` + parseFloat(currentPrice).toFixed(2) + "</p>";
 
         cartItemDetails.appendChild(cartItemName);
         cartItemDetails.appendChild(cartItemPrice);
@@ -330,4 +380,11 @@ const updateSubtraction = (item) => {
     document.getElementById(uniqueIDTotal).innerText = "$" + parseFloat(currentPrice).toFixed(2);
 };
 
-// ORDER CONFIRMATION MODAL
+// NEW ORDER BUTTON
+const newOrderButton = document.getElementById("start-new-order");
+newOrderButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    setTimeout(() => { // refresh the page to reset everything
+        location.reload(true);
+    }, 1000);
+}); // NOTE: this event listener would invoke functions and operations to submit cart information to the backend
