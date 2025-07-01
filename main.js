@@ -95,13 +95,13 @@ const printCart = () => { // prints all items in cart on the confirmation modal
 
         const itemInfo = document.createElement("span");
         itemInfo.className = "final-order-item-info";
-        itemInfo.innerHTML = "<p class=quantity>" + item.quantity + "x</p><p>@ " + parseFloat(item.price).toFixed(2) + "</p>";
+        itemInfo.innerHTML = "<p class=quantity>" + item.quantity + "x</p><p>@ $" + parseFloat(item.price).toFixed(2) + "</p>";
         itemInfoDiv.appendChild(itemInfo);
 
-        const itemTotal = document.createElement("h3");
+        const itemTotal = document.createElement("p");
         const currentPrice = item.price * parseFloat(item.quantity);
         itemTotal.className = "final-order-item-total";
-        itemTotal.innerText = parseFloat(currentPrice).toFixed(2);
+        itemTotal.innerHTML = "<strong>$" + parseFloat(currentPrice).toFixed(2) + "</strong>";
 
         itemDiv.appendChild(itemImage);
         itemDiv.appendChild(itemInfoDiv);
