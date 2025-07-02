@@ -64,6 +64,10 @@ strong {
     border-radius: 8px;
 }
 
+.active { /* USE OUTLINE PROPERTY TO ADD BORDER OVER IMAGE */
+   outline: 2px solid var(--style-red);
+}
+
 .add-button {
     color: var(--style-rose-900);
     background-color: var(--style-rose-50);
@@ -85,6 +89,7 @@ strong {
     color: var(--style-red);
     cursor: pointer;
     border: 1px solid var(--style-red);
+    transition: color 0.15s ease-in, border 0.15s ease-in;
 }
 
 .function-div {
@@ -135,10 +140,12 @@ strong {
 .decrement-button:hover {
     cursor: pointer;
     background-color: var(--style-rose-100);
+    transition: background-color 0.15s ease-in;
 }
 
 .decrement-button:hover > svg > path {
     fill: var(--style-red);
+    transition: fill 0.15s ease-in;
 }
 
 .increment-button {
@@ -160,10 +167,12 @@ strong {
 .increment-button:hover {
     cursor: pointer;
     background-color: var(--style-rose-100);
+    transition: background-color 0.15s ease-in;
 }
 
 .increment-button:hover > svg > path {
     fill: var(--style-red);
+    transition: fill 0.15s ease-in;
 }
 
 .item-current-quantity {
@@ -262,6 +271,8 @@ strong {
 
 .remove-button:hover {
     cursor: pointer;
+    filter: brightness(0);
+    transition: filter 0.15s ease-in;
 }
 
 #end-of-list {
@@ -313,6 +324,8 @@ strong {
 
 #confirm-order:hover {
     cursor: pointer;
+    background-color: hsl(14, 86%, 30%);
+    transition: background-color 0.15s ease-in;
 }
 
 /* MODAL STYLING */
@@ -370,6 +383,12 @@ strong {
     border-radius: 50px;
     margin: 25px 0 5px 0;
     padding: 15px 0 15px 0;
+}
+
+#start-new-order:hover {
+    cursor: pointer;
+    background-color: hsl(14, 86%, 30%);
+    transition: background-color 0.15s ease-in;
 }
 
 #final-order-list {

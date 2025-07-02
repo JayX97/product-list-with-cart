@@ -16,6 +16,11 @@ itemContainer.appendChild(itemsList);
 
 // FUNCTIONS
 const addToCart = (newItem) => {// added to add button event listener
+    // add border to item image when quantity is more than 1
+    const menuImageID = newItem.name.toLowerCase().split(" ").join("-") + "-img";
+    const menuImage = document.getElementById(menuImageID);
+    menuImage.classList.add("active");
+
     emptyCart.style.display = "none";
     endOfList.style.display = "flex";
     
@@ -44,11 +49,16 @@ const decrementItem = (item) => {
 const removeCartItem = (oldItem) => {// added to remove button event listener
     const oldItemID = oldItem.name.toLowerCase().split(" ").join("-") + "-div"; // obtain div with item details
     const oldItemDiv = document.getElementById(oldItemID);
+    const menuImageID = oldItem.name.toLowerCase().split(" ").join("-") + "-img";
+    const menuImage = document.getElementById(menuImageID);
 
     cartArray = cartArray.filter(item => item.name !== oldItem.name); // remove all items from cart array with same name
 
     oldItem.quantity = 0;
     oldItemDiv.remove();
+
+    // remove border around item image when quantity is 0
+    menuImage.classList.remove("active");
 
     if (totalCartQuantity() === 0) {// replace cart list with empty cart image if cart quantity is 0
         endOfList.style.display = "none";
@@ -141,6 +151,7 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         // item image
         const itemImage = document.createElement("img");
         itemImage.className = "item-image";
+        itemImage.id = item.name.toLowerCase().split(" ").join("-") + "-img";
         itemImage.src = item.image.desktop; // need to create conditional to generate different sizes based on screen size
         itemImage.alt = item.name;
 
