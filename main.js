@@ -101,7 +101,7 @@ const printCart = () => { // prints all items in cart on the confirmation modal
         
         const itemName = document.createElement("span");
         itemName.className = "cart-item-name";
-        itemName.innerHTML = "<p><strong>" + item.name + "</strong></p>";
+        itemName.innerHTML = "<p>" + item.name + "</p>";
         itemInfoDiv.appendChild(itemName);
 
         const itemPrice = document.createElement("span");
@@ -152,7 +152,9 @@ fetch("./data.json") // fetch data from data.json using Fetch API
         const itemImage = document.createElement("img");
         itemImage.className = "item-image";
         itemImage.id = item.name.toLowerCase().split(" ").join("-") + "-img";
-        itemImage.src = item.image.desktop; // need to create conditional to generate different sizes based on screen size
+        // create conditional to generate different sizes based on screen size
+        if (window.matchMedia("(max-width: 850px)").matches) itemImage.src = item.image.mobile;
+        else itemImage.src = item.image.desktop;
         itemImage.alt = item.name;
 
         // add to cart button (will change to div with two buttons to increase/decrease item quantity)
@@ -295,7 +297,7 @@ confirmOrderButton.addEventListener("click", (e) => {
     e.preventDefault();
     const modalContainer = document.querySelector(".modal-container");
     printCart();
-    modalContainer.style.display = "inline"; // pop up order confirmation modal
+    modalContainer.style.display = "flex"; // pop up order confirmation modal
 });
 
 endOfList.appendChild(confirmOrderButton);
